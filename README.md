@@ -1,5 +1,7 @@
 # cdcup
 
+A `docker` (`compose`) environment on Linux / macOS is required to play with this. Ruby is **not** necessary.
+
 ## `./cdcup.sh init`
 
 Initialize a playground environment, generate configuration files.
