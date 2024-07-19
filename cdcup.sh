@@ -20,6 +20,9 @@ elif [ "$1" == 'pipeline' ]; then
   docker compose cp cdc/pipeline-definition.yaml jobmanager:/opt/flink-cdc/pipeline-definition.yaml
   docker compose exec jobmanager bash -c "cd /opt/flink-cdc &&
        ./bin/flink-cdc.sh ./pipeline-definition.yaml --flink-home /opt/flink --jar ./lib/mysql-connector-java.jar"
+elif [ "$1" == 'flink' ]; then
+  port_info="$(docker compose port jobmanager 8081)"
+  printf "🚩 Visit Flink Dashboard at: http://localhost:%s\n" "${port_info##*:}"
 elif [ "$1" == 'stop' ]; then
   printf "🚩 Stopping playground...\n"
   docker compose stop
@@ -27,5 +30,5 @@ elif [ "$1" == 'down' ]; then
   printf "🚩 Purging playground...\n"
   docker compose down -v
 else
-  printf "Usage: ./cdcup.sh [init|up|pipeline|stop|down]\n"
+  printf "Usage: ./cdcup.sh [init|up|pipeline|flink|stop|down]\n"
 fi

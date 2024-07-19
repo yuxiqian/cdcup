@@ -15,6 +15,10 @@ Submit generated pipeline job. Before executing this, please ensure that:
 1. All container are running and ready for connections
 2. (For MySQL) You've created at least one database & tables to be captured
 
+## `./cdcup.sh flink`
+
+Prints Flink Web dashboard URL.
+
 ## `./cdcup.sh stop`
 
 Stop all running playground containers.
