@@ -3,6 +3,10 @@
 # MySQL source definition generator class.
 class MySQL
   class << self
+    def connector_name
+      'flink-cdc-pipeline-connector-mysql'
+    end
+
     def prepend_to_docker_compose_yaml(docker_compose_yaml)
       docker_compose_yaml['services']['mysql'] = {
         'image' => 'mysql:8.0',
@@ -11,7 +15,8 @@ class MySQL
           'MYSQL_ALLOW_EMPTY_PASSWORD' => true,
           'MYSQL_DATABASE' => 'cdcup'
         },
-        'ports' => ['3306']
+        'ports' => ['3306'],
+        'volumes' => ["#{CDC_DATA_VOLUME}:/data"]
       }
     end
 
@@ -22,7 +27,7 @@ class MySQL
         'port' => 3306,
         'username' => 'root',
         'password' => '',
-        'tables' => 'cdcup.\.*',
+        'tables' => '\.*.\.*',
         'server-id' => '5400-6400',
         'server-time-zone' => 'UTC'
       }

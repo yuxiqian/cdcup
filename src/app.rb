@@ -4,6 +4,8 @@
 require 'tty-prompt'
 require 'yaml'
 
+require_relative 'download_libs'
+
 require_relative 'source/my_sql'
 require_relative 'source/values_source'
 
@@ -11,10 +13,15 @@ require_relative 'sink/doris'
 require_relative 'sink/star_rocks'
 require_relative 'sink/values_sink'
 
+CDC_DATA_VOLUME = 'cdc-data'
+
 @prompt = TTY::Prompt.new
 
 @docker_compose_file_content = {
-  'services' => {}
+  'services' => {},
+  'volumes' => {
+    CDC_DATA_VOLUME => {}
+  }
 }
 
 @pipeline_yaml_file_content = {
@@ -40,10 +47,21 @@ FLINK_VERSIONS = %w[
   1.19.1
 ].freeze
 
-@prompt.say 'Welcome to cdc-up quickstart wizard!'
-@prompt.say 'Answer few questions before we can start:'
+FLINK_CDC_VERSIONS = %w[
+  3.0.0
+  3.0.1
+  3.1.0
+  3.1.1
+].freeze
 
-flink_version = @prompt.select('Which Flink version would you like to use?', FLINK_VERSIONS, default: FLINK_VERSIONS.last)
+puts
+@prompt.say '🎉 Welcome to cdc-up quickstart wizard!'
+@prompt.say '   There are a few questions to ask before getting started:'
+
+flink_version = @prompt.select('🐿️ Which Flink version would you like to use?', FLINK_VERSIONS,
+                               default: FLINK_VERSIONS.last)
+flink_cdc_version = @prompt.select('  ️ Which Flink CDC version would you like to use?', FLINK_CDC_VERSIONS,
+                                   default: FLINK_CDC_VERSIONS.last)
 
 @docker_compose_file_content['services']['jobmanager'] = {
   'image' => "flink:#{flink_version}-scala_2.12",
@@ -64,13 +82,24 @@ flink_version = @prompt.select('Which Flink version would you like to use?', FLI
   }
 }
 
-source = @prompt.select('Which data source to use?', SOURCES.keys)
-sink = @prompt.select('Which data sink to use?', SINKS.keys)
+source = @prompt.select('🚰 Which data source to use?', SOURCES.keys)
+sink = @prompt.select('🪣 Which data sink to use?', SINKS.keys)
 
 SOURCES[source].prepend_to_docker_compose_yaml(@docker_compose_file_content)
 SOURCES[source].prepend_to_pipeline_yaml(@pipeline_yaml_file_content)
 SINKS[sink].prepend_to_docker_compose_yaml(@docker_compose_file_content)
 SINKS[sink].prepend_to_pipeline_yaml(@pipeline_yaml_file_content)
 
-File.write('/conf/docker-compose.yaml', YAML.dump(@docker_compose_file_content))
-File.write('/conf/pipeline-definition.yaml', YAML.dump(@pipeline_yaml_file_content))
+File.write('/cdc/docker-compose.yaml', YAML.dump(@docker_compose_file_content))
+File.write('/cdc/pipeline-definition.yaml', YAML.dump(@pipeline_yaml_file_content))
+
+@prompt.say "\n3️⃣  Preparing CDC #{flink_cdc_version}..."
+
+connectors_name = Set.new [
+  SOURCES[source].connector_name,
+  SINKS[sink].connector_name
+]
+
+download_cdc(flink_cdc_version, '/cdc/', connectors_name)
+
+@prompt.say '🥳 All done!'

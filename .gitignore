@@ -57,5 +57,6 @@ build-iPhoneSimulator/
 
 .idea/**
 
-# These are generated YAML files
-conf/**
+# These are generated files
+cdc/**
+/docker-compose.yaml
