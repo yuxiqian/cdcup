@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# StarRocks sink definition generator class.
+# Kafka sink definition generator class.
 class Kafka
   class << self
     def connector_name
@@ -11,17 +11,17 @@ class Kafka
       docker_compose_yaml['services']['zookeeper'] = {
         'image' => 'confluentinc/cp-zookeeper:7.4.4',
         'hostname' => 'zookeeper',
+        'ports' => ['2181'],
         'environment' => {
           'ZOOKEEPER_CLIENT_PORT' => 2181,
           'ZOOKEEPER_TICK_TIME' => 2000
-        },
-        'ports' => ['2181']
+        }
       }
       docker_compose_yaml['services']['kafka'] = {
         'image' => 'confluentinc/cp-kafka:7.4.4',
         'depends_on' => ['zookeeper'],
         'hostname' => 'kafka',
-        'ports' => %w[9092],
+        'ports' => ['9092'],
         'environment' => {
           'KAFKA_BROKER_ID' => 1,
           'KAFKA_ZOOKEEPER_CONNECT' => 'zookeeper:2181',

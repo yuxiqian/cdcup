@@ -66,8 +66,15 @@ def download_mysql_driver(dest_path)
   -O #{dest_path}/lib/mysql-connector-java.jar`
 end
 
+def download_hadoop_common(dest_path)
+  puts "\tDownloading Hadoop Uber jar..."
+  `wget -q https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.8.3-10.0/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar \
+  -O #{dest_path}/lib/hadoop-uber.jar`
+end
+
 def download_cdc(version, dest_path, connectors = [])
   download_cdc_bin(version.to_sym, dest_path)
   download_connectors(version.to_sym, dest_path, connectors)
-  download_mysql_driver(dest_path)
+  download_mysql_driver(dest_path) if connectors.include? 'flink-cdc-pipeline-connector-mysql'
+  download_hadoop_common(dest_path) if connectors.include? 'flink-cdc-pipeline-connector-paimon'
 end

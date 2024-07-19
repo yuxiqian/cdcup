@@ -11,6 +11,7 @@ require_relative 'source/values_source'
 
 require_relative 'sink/doris'
 require_relative 'sink/kafka'
+require_relative 'sink/paimon'
 require_relative 'sink/star_rocks'
 require_relative 'sink/values_sink'
 
@@ -38,6 +39,7 @@ SOURCES = {
 
 SINKS = {
   kafka: Kafka,
+  paimon: Paimon,
   doris: Doris,
   starrocks: StarRocks,
   values: ValuesSink

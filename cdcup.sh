@@ -23,8 +23,14 @@ elif [ "$1" == 'pipeline' ]; then
   fi
   printf "🚩 Submitting pipeline job...\n"
   docker compose cp "$2" jobmanager:/opt/flink-cdc/pipeline-definition.yaml
-  docker compose exec jobmanager bash -c "cd /opt/flink-cdc &&
-       ./bin/flink-cdc.sh ./pipeline-definition.yaml --flink-home /opt/flink --jar ./lib/mysql-connector-java.jar"
+  startup_script="cd /opt/flink-cdc && ./bin/flink-cdc.sh ./pipeline-definition.yaml --flink-home /opt/flink"
+  if test -f ./cdc/lib/hadoop-uber.jar; then
+      startup_script="$startup_script --jar lib/hadoop-uber.jar"
+  fi
+  if test -f ./cdc/lib/mysql-connector-java.jar; then
+      startup_script="$startup_script --jar lib/mysql-connector-java.jar"
+  fi
+  docker compose exec jobmanager bash -c "$startup_script"
 elif [ "$1" == 'flink' ]; then
   port_info="$(docker compose port jobmanager 8081)"
   printf "🚩 Visit Flink Dashboard at: http://localhost:%s\n" "${port_info##*:}"
