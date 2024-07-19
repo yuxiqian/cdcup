@@ -2,7 +2,7 @@
 
 ## `./cdcup.sh init`
 
-Initialize a playground environment, generate configuration files
+Initialize a playground environment, generate configuration files.
 
 ## `./cdcup.sh up`
 
@@ -21,4 +21,4 @@ Stop all running playground containers.
 
 ## `./cdcup.sh down`
 
-Stop and remove containers, networks.
+Stop and remove containers, networks, and volumes.
