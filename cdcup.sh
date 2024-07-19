@@ -25,7 +25,7 @@ elif [ "$1" == 'stop' ]; then
   docker compose stop
 elif [ "$1" == 'down' ]; then
   printf "🚩 Purging playground..."
-  docker compose down -fsv
+  docker compose down -v
 else
   printf "Usage: ./cdcup.sh [init|up|pipeline|stop|down]\n"
 fi
