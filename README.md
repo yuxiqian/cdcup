@@ -8,7 +8,7 @@ Initialize a playground environment, generate configuration files.
 
 Start docker containers. Note that it may take a while before database is ready.
 
-## `./cdcup.sh pipeline`
+## `./cdcup.sh pipeline <pipeline def yaml>`
 
 Submit generated pipeline job. Before executing this, please ensure that:
 

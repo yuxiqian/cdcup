@@ -61,6 +61,7 @@ def download_connectors(version, dest_path, connectors)
 end
 
 def download_mysql_driver(dest_path)
+  puts "\tDownloading MySQL Java Connector..."
   `wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.27/mysql-connector-java-8.0.27.jar \
   -O #{dest_path}/lib/mysql-connector-java.jar`
 end

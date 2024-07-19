@@ -60,3 +60,4 @@ build-iPhoneSimulator/
 # These are generated files
 cdc/**
 /docker-compose.yaml
+/pipeline-definition.yaml

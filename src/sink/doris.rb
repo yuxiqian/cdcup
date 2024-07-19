@@ -20,6 +20,8 @@ class Doris
       pipeline_yaml['sink'] = {
         'type' => 'doris',
         'fenodes' => 'doris:8030',
+        'benodes' => 'doris:8040',
+        'jdbc-url' => 'jdbc:mysql://doris:9030',
         'username' => 'root',
         'password' => '',
         'table.create.properties.light_schema_change' => true,
