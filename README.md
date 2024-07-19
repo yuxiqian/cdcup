@@ -1,7 +1,24 @@
 # cdcup
 
-* Initialize environment with `./cdcup.sh init`
-* Wait for containers to startup, fillin some test data
-* Run `./cdcup.sh run`
-* ...
-* Run `./cdcup.sh stop` to stop playground or `./cdcup.sh rm` to remove everything
+## `./cdcup.sh init`
+
+Initialize a playground environment, generate configuration files
+
+## `./cdcup.sh up`
+
+Start docker containers. Note that it may take a while before database is ready.
+
+## `./cdcup.sh pipeline`
+
+Submit generated pipeline job. Before executing this, please ensure that:
+
+1. All container are running and ready for connections
+2. (For MySQL) You've created at least one database & tables to be captured
+
+## `./cdcup.sh stop`
+
+Stop all running playground containers.
+
+## `./cdcup.sh down`
+
+Stop and remove containers, networks.
