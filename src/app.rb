@@ -10,6 +10,7 @@ require_relative 'source/my_sql'
 require_relative 'source/values_source'
 
 require_relative 'sink/doris'
+require_relative 'sink/kafka'
 require_relative 'sink/star_rocks'
 require_relative 'sink/values_sink'
 
@@ -36,6 +37,7 @@ SOURCES = {
 }.freeze
 
 SINKS = {
+  kafka: Kafka,
   doris: Doris,
   starrocks: StarRocks,
   values: ValuesSink
