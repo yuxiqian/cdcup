@@ -3,6 +3,32 @@
 # Do not continue after error
 set -e
 
+display_help() {
+  echo "Usage: ./cdcup.sh { init | up | pipeline <yaml> | flink | stop | down | help }"
+  echo
+  echo "Commands:"
+  echo "    * init:"
+  echo "        Initialize a playground environment, and generate configuration files."
+  echo
+  echo "    * up:"
+  echo "        Start docker containers. This may take a while before database is ready."
+  echo
+  echo "    * pipeline <yaml>:"
+  echo "        Submit a YAML pipeline job."
+  echo
+  echo "    * flink:"
+  echo "        Print Flink Web dashboard URL."
+  echo
+  echo "    * stop:"
+  echo "        Stop all running playground containers."
+  echo
+  echo "    * down:"
+  echo "        Stop and remove containers, networks, and volumes."
+  echo
+  echo "    * help:"
+  echo "        Print this message."
+}
+
 if [ "$1" == 'init' ]; then
   printf "🚩 Building bootstrap docker image...\n"
   docker build -q -t cdcup/bootstrap .
@@ -41,5 +67,5 @@ elif [ "$1" == 'down' ]; then
   printf "🚩 Purging playground...\n"
   docker compose down -v
 else
-  printf "Usage: ./cdcup.sh [init|up|pipeline|flink|stop|down]\n"
+  display_help
 fi
