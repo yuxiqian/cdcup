@@ -75,6 +75,6 @@ end
 def download_cdc(version, dest_path, connectors = [])
   download_cdc_bin(version.to_sym, dest_path)
   download_connectors(version.to_sym, dest_path, connectors)
-  download_mysql_driver(dest_path) if connectors.include? 'flink-cdc-pipeline-connector-mysql'
-  download_hadoop_common(dest_path) if connectors.include? 'flink-cdc-pipeline-connector-paimon'
+  download_mysql_driver(dest_path) if connectors.include? MySQL.connector_name
+  download_hadoop_common(dest_path) if connectors.include? Paimon.connector_name
 end
