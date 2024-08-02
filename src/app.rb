@@ -49,6 +49,7 @@ FLINK_VERSIONS = %w[
   1.17.2
   1.18.1
   1.19.1
+  1.20.0
 ].freeze
 
 FLINK_CDC_VERSIONS = %w[
